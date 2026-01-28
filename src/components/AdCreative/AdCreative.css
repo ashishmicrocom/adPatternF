@@ -1,0 +1,240 @@
+@import '../../theme/theme.css';
+
+.ac-card {
+    background: rgba(14, 17, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.ac-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ac-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ac-icon {
+    font-size: 20px;
+}
+
+.ac-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.ac-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ac-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ac-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ac-field-full {
+    width: 100%;
+}
+
+.ac-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.ac-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ac-btn-group {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.ac-regen-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 200ms;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.ac-regen-btn:hover {
+    background: rgba(255, 140, 0, 0.1);
+    border-color: rgba(255, 140, 0, 0.3);
+    color: #FF8C00;
+}
+
+.ac-regen-btn--active {
+    background: rgba(255, 140, 0, 0.15);
+    border-color: rgba(255, 140, 0, 0.4);
+    color: #FF8C00;
+}
+
+.ac-input,
+.ac-textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 200ms;
+}
+
+.ac-input:focus,
+.ac-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ac-input:disabled,
+.ac-textarea:disabled,
+.ac-input[readonly],
+.ac-textarea[readonly] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.ac-textarea {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* CTA Buttons */
+.ac-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ac-cta-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms;
+}
+
+.ac-cta-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.ac-cta-btn--active {
+    background: linear-gradient(135deg, var(--color-primary), #ff8a4b);
+    border: none;
+    color: white;
+}
+
+/* Image Grid */
+.ac-image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.ac-image-box {
+    aspect-ratio: 1.91 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.ac-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ac-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 16px;
+}
+
+.ac-image-placeholder--clickable {
+    cursor: pointer;
+    transition: all 200ms;
+}
+
+.ac-image-placeholder--clickable:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.ac-placeholder-icon {
+    font-size: 28px;
+}
+
+.ac-placeholder-text {
+    font-size: 11px;
+}
+
+.ac-upload-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms;
+}
+
+.ac-upload-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 768px) {
+    .ac-image-grid {
+        grid-template-columns: 1fr;
+    }
+}
