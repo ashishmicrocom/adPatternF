@@ -20,10 +20,10 @@ export default function CampaignMeta({ meta, onEdit }: Props) {
           <div className="cm-label">Objective</div>
           <div className="cm-value cm-badge cm-badge--orange">{meta.objective}</div>
         </div>
-        <div className="cm-field">
+        {/* <div className="cm-field">
           <div className="cm-label">Daily Budget</div>
           <div className="cm-value cm-badge--budget">{meta.budgetDaily}</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

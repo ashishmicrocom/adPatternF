@@ -3,17 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faDollarSign, faLocationDot, faBullseye } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faDollarSign, faLocationDot, faBullseye, faUsers, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 import "./SummaryCard.css";
 
 type Payload = { 
   name?: string; 
   category?: string; 
   description?: string;
-  price?: string; 
+  price?: string;
+  priceMin?: string;
+  priceMax?: string;
   location?: string; 
   target?: string;
   productType?: string;
+  ageMin?: string;
+  ageMax?: string;
+  gender?: string;
 };
 
 export default function SummaryCard({}: {}) {
@@ -108,14 +113,37 @@ export default function SummaryCard({}: {}) {
             <div>
               <div className="sc-meta-label">Price:</div>
               {editing ? (
-                <input 
-                  className="sc-input-inline sc-input-small" 
-                  value={local.price || ''} 
-                  onChange={(e)=>setLocal({...local, price: e.target.value})}
-                  placeholder="$100 - $500"
-                />
+                <>
+                  <input 
+                    className="sc-input-inline sc-input-small" 
+                    value={local.price || ''} 
+                    onChange={(e)=>setLocal({...local, price: e.target.value, priceMin: '', priceMax: ''})}
+                    placeholder="Single price"
+                  />
+                  <div style={{fontSize: '11px', color: '#666', marginTop: '4px'}}>Or range:</div>
+                  <div style={{display: 'flex', gap: '8px', marginTop: '4px'}}>
+                    <input 
+                      className="sc-input-inline sc-input-small" 
+                      style={{width: '80px'}}
+                      value={local.priceMin || ''} 
+                      onChange={(e)=>setLocal({...local, priceMin: e.target.value, price: ''})}
+                      placeholder="Min"
+                    />
+                    <input 
+                      className="sc-input-inline sc-input-small" 
+                      style={{width: '80px'}}
+                      value={local.priceMax || ''} 
+                      onChange={(e)=>setLocal({...local, priceMax: e.target.value, price: ''})}
+                      placeholder="Max"
+                    />
+                  </div>
+                </>
               ) : (
-                <div className="sc-meta-value">{data.price || 'Not specified'}</div>
+                <div className="sc-meta-value">
+                  {data.price ? `₹${data.price}` : 
+                   data.priceMin && data.priceMax ? `₹${data.priceMin} - ₹${data.priceMax}` : 
+                   'Not specified'}
+                </div>
               )}
             </div>
           </div>
@@ -133,6 +161,59 @@ export default function SummaryCard({}: {}) {
                 />
               ) : (
                 <div className="sc-meta-value">{data.location || 'Not specified'}</div>
+              )}
+            </div>
+          </div>
+
+          <div className="sc-meta-item">
+            <span className="sc-meta-icon"><FontAwesomeIcon icon={faUsers} /></span>
+            <div>
+              <div className="sc-meta-label">Age Range:</div>
+              {editing ? (
+                <div style={{display: 'flex', gap: '8px'}}>
+                  <input 
+                    className="sc-input-inline sc-input-small" 
+                    style={{width: '60px'}}
+                    type="number"
+                    value={local.ageMin || ''} 
+                    onChange={(e)=>setLocal({...local, ageMin: e.target.value})}
+                    placeholder="Min"
+                  />
+                  <input 
+                    className="sc-input-inline sc-input-small" 
+                    style={{width: '60px'}}
+                    type="number"
+                    value={local.ageMax || ''} 
+                    onChange={(e)=>setLocal({...local, ageMax: e.target.value})}
+                    placeholder="Max"
+                  />
+                </div>
+              ) : (
+                <div className="sc-meta-value">
+                  {data.ageMin && data.ageMax ? `${data.ageMin} - ${data.ageMax} years` : 'Not specified'}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="sc-meta-item">
+            <span className="sc-meta-icon"><FontAwesomeIcon icon={faVenusMars} /></span>
+            <div>
+              <div className="sc-meta-label">Gender:</div>
+              {editing ? (
+                <select 
+                  className="sc-input-inline sc-input-small" 
+                  value={local.gender || 'Male'} 
+                  onChange={(e)=>setLocal({...local, gender: e.target.value})}
+                  style={{padding: '4px 8px', borderRadius: '4px', border: '1px solid #3a3a3a', background: '#1a1a1a', color: '#fff'}}
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Transgender">Transgender</option>
+                  <option value="Other">Other</option>
+                </select>
+              ) : (
+                <div className="sc-meta-value">{data.gender || 'Male'}</div>
               )}
             </div>
           </div>

@@ -5,11 +5,12 @@ import "./PlatformSelect.css";
 
 type Props = { selected?: string; onSelect: (platform: string) => void };
 
-export default function PlatformSelect({ selected = "meta", onSelect }: Props) {
+// Platform options from model: Meta, Google
+export default function PlatformSelect({ selected = "Meta", onSelect }: Props) {
   return (
     <div className="ps-root">
       <div className="ps-grid">
-        <button className={`ps-card ${selected === 'meta' ? 'ps-card--active' : ''}`} onClick={() => onSelect('meta')}>
+        <button className={`ps-card ${selected === 'Meta' ? 'ps-card--active' : ''}`} onClick={() => onSelect('Meta')}>
           <div className="ps-card__logo">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="64" height="64" rx="12" fill="#1877F2" />
@@ -22,7 +23,7 @@ export default function PlatformSelect({ selected = "meta", onSelect }: Props) {
           </div>
         </button>
 
-        <div className={`ps-card ps-card--disabled`} aria-disabled>
+        <div className="ps-card ps-card--disabled" aria-disabled>
           <div className="ps-card__logo">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="64" height="64" rx="12" fill="#5F6368" />

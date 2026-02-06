@@ -10,7 +10,24 @@ import "./CreateCampaign.css";
 
 export default function CreateCampaign() {
   const [step, setStep] = useState<number>(1);
-  const [platform, setPlatform] = useState<string>("meta");
+  const [platform, setPlatform] = useState<string>(() => {
+    // Load platform from localStorage if available
+    try {
+      return localStorage.getItem('adpatterns_selected_platform') || 'Meta';
+    } catch {
+      return 'Meta';
+    }
+  }); // Match model Platform column: Meta, Google
+
+  // Persist platform to localStorage when changed
+  const handlePlatformSelect = (p: string) => {
+    setPlatform(p);
+    try {
+      localStorage.setItem('adpatterns_selected_platform', p);
+    } catch (e) {
+      console.error('Failed to save platform to localStorage', e);
+    }
+  };
 
   return (
     <div className="cc-root">
@@ -40,7 +57,7 @@ export default function CreateCampaign() {
               <h2 className="cc-panel-title">Select Advertising Platform</h2>
               <p className="cc-panel-subtitle">Choose where you want to run your ads</p>
             </div>
-            <PlatformSelect selected={platform} onSelect={(p)=>setPlatform(p)} />
+            <PlatformSelect selected={platform} onSelect={handlePlatformSelect} />
             <div className="cc-actions">
               <button className="cc-btn cc-btn--primary" onClick={()=>setStep(2)}>
                 Continue <FontAwesomeIcon icon={faArrowRight} />

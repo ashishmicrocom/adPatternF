@@ -5,7 +5,24 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { API_ENDPOINTS } from "@/lib/api";
 import "./ProductForm.css";
+
+// Jaipur Areas from Model (matching notebook exactly)
+const JAIPUR_AREAS = [
+  "Malviya Nagar","Vaishali Nagar","Mansarovar","Jagatpura","Pratap Nagar",
+  "C Scheme","Civil Lines","Raja Park","Sanganer","Ajmer Road","Bapu Nagar",
+  "Sodala","Durgapura","Gopalpura","Jhotwara","Bani Park","Shyam Nagar",
+  "Tonk Road","Vidhyadhar Nagar","Nirman Nagar","Ambabari","Sirsi Road",
+  "Mahesh Nagar","Lal Kothi","Transport Nagar","Sitapura","Chitrakoot",
+  "Hasanpura","Patrakar Colony","Adarsh Nagar","Subhash Nagar","Brahmpuri",
+  "Tilak Nagar","Shastri Nagar","Khatipura","Murlipura","Kalwar Road",
+  "Harmada","Bhankrota","Mahapura","Sirsi Extension","Kukas","Amer Road",
+  "Kanota","Achrol","Bagru","Phagi","Chaksu","Jobner Road","Bindayaka",
+  "Vatika","Beelwa","Agra Road","Jamwa Ramgarh","Gandhi Path","Queens Road",
+  "New Sanganer Road","Gopalpura Bypass","Triveni Nagar","SFS Mansarovar",
+  "Heerapura","Kartarpura","Barkat Nagar"
+];
 
 // Progress Steps Component
 interface Step {
@@ -84,22 +101,20 @@ const ProductInfoStep: React.FC<StepProps> = ({ formData, updateFormData, errors
       <label htmlFor="productType" className="pf-label-new">
         What are you advertising?
       </label>
-      <select
+      <input
+        type="text"
         id="productType"
         name="productType"
-        value={formData.productType || 'Product'}
-        onChange={updateFormData}
-        className={`pf-input-new ${errors.productType ? 'pf-input-error' : ''}`}
-      >
-        <option value="Product">Product</option>
-        <option value="Service">Service</option>
-      </select>
+        value="Product"
+        readOnly
+        className="pf-input-new pf-input-readonly"
+      />
       {errors.productType && <p className="pf-error-text">{errors.productType}</p>}
     </div>
     
     <div className="pf-field">
       <label htmlFor="name" className="pf-label-new">
-        Product / Service Name
+        Enter Your Product Name
       </label>
       <input
         type="text"
@@ -117,22 +132,14 @@ const ProductInfoStep: React.FC<StepProps> = ({ formData, updateFormData, errors
       <label htmlFor="category" className="pf-label-new">
         Category
       </label>
-      <select
+      <input
+        type="text"
         id="category"
         name="category"
-        value={formData.category || 'Clothing'}
-        onChange={updateFormData}
-        className="pf-input-new"
-      >
-        <option value="Clothing">Clothing</option>
-        <option value="Education">Education</option>
-        <option value="Restaurant">Restaurant</option>
-        <option value="Software">Software</option>
-        <option value="Health">Health & Fitness</option>
-        <option value="Beauty">Beauty & Wellness</option>
-        <option value="Home">Home & Garden</option>
-        <option value="Electronics">Electronics</option>
-      </select>
+        value="Clothing"
+        readOnly
+        className="pf-input-new pf-input-readonly"
+      />
     </div>
   </div>
 );
@@ -142,7 +149,7 @@ const DescriptionStep: React.FC<StepProps> = ({ formData, updateFormData, errors
   <div className="pf-step-content">
     <div className="pf-field">
       <label htmlFor="description" className="pf-label-new">
-        Product / Service Description
+        Enter Your Product Description
       </label>
       <textarea
         id="description"
@@ -160,7 +167,7 @@ const DescriptionStep: React.FC<StepProps> = ({ formData, updateFormData, errors
     
     <div className="pf-field">
       <label htmlFor="price" className="pf-label-new">
-        Price or Price Range
+        Price
       </label>
       <input
         type="text"
@@ -168,32 +175,201 @@ const DescriptionStep: React.FC<StepProps> = ({ formData, updateFormData, errors
         name="price"
         value={formData.price || ''}
         onChange={updateFormData}
-        className={`pf-input-new ${errors.price ? 'pf-input-error' : ''}`}
-        placeholder="e.g. ₹999 or ₹999-₹4999"
+        disabled={!!formData.priceMin || !!formData.priceMax}
+        className={`pf-input-new ${errors.price ? 'pf-input-error' : ''} ${(formData.priceMin || formData.priceMax) ? 'pf-input-disabled' : ''}`}
+        placeholder="e.g. ₹999"
       />
       {errors.price && <p className="pf-error-text">{errors.price}</p>}
+    </div>
+    
+    <div className="pf-field">
+      <label className="pf-label-new">
+        Price Range
+      </label>
+      <div className="pf-field-grid">
+        <div className="pf-field">
+          <input
+            type="text"
+            id="priceMin"
+            name="priceMin"
+            value={formData.priceMin || ''}
+            onChange={updateFormData}
+            disabled={!!formData.price}
+            className={`pf-input-new ${errors.priceMin ? 'pf-input-error' : ''} ${formData.price ? 'pf-input-disabled' : ''}`}
+            placeholder="Min ₹"
+          />
+          {errors.priceMin && <p className="pf-error-text">{errors.priceMin}</p>}
+        </div>
+        
+        <div className="pf-field">
+          <input
+            type="text"
+            id="priceMax"
+            name="priceMax"
+            value={formData.priceMax || ''}
+            onChange={updateFormData}
+            disabled={!!formData.price}
+            className={`pf-input-new ${errors.priceMax ? 'pf-input-error' : ''} ${formData.price ? 'pf-input-disabled' : ''}`}
+            placeholder="Max ₹"
+          />
+          {errors.priceMax && <p className="pf-error-text">{errors.priceMax}</p>}
+        </div>
+      </div>
     </div>
   </div>
 );
 
 // Step 3: Target Audience & Location
-const AudienceStep: React.FC<StepProps> = ({ formData, updateFormData, errors }) => (
-  <div className="pf-step-content">
-    <div className="pf-field">
-      <label htmlFor="location" className="pf-label-new">
-        Target Location
-      </label>
-      <input
-        type="text"
-        id="location"
-        name="location"
-        value={formData.location || ''}
-        onChange={updateFormData}
-        className={`pf-input-new ${errors.location ? 'pf-input-error' : ''}`}
-        placeholder="e.g. Mumbai, Maharashtra, India"
-      />
-      {errors.location && <p className="pf-error-text">{errors.location}</p>}
-    </div>
+const AudienceStep: React.FC<StepProps> = ({ formData, updateFormData, errors }) => {
+  const [locationInput, setLocationInput] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>(
+    formData.location ? formData.location.split(',').map(l => l.trim()) : []
+  );
+  
+  const filteredAreas = locationInput.length > 0
+    ? JAIPUR_AREAS.filter(area => 
+        area.toLowerCase().includes(locationInput.toLowerCase()) &&
+        !selectedLocations.includes(area)
+      )
+    : [];
+  
+  const handleLocationSelect = (area: string) => {
+    const newLocations = [...selectedLocations, area];
+    setSelectedLocations(newLocations);
+    
+    // Update form data
+    const event = {
+      target: {
+        name: 'location',
+        value: newLocations.join(', ')
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    updateFormData(event);
+    
+    setLocationInput('');
+    setShowSuggestions(false);
+  };
+  
+  const handleLocationRemove = (area: string) => {
+    const newLocations = selectedLocations.filter(loc => loc !== area);
+    setSelectedLocations(newLocations);
+    
+    // Update form data
+    const event = {
+      target: {
+        name: 'location',
+        value: newLocations.join(', ')
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    updateFormData(event);
+  };
+  
+  return (
+    <div className="pf-step-content">
+      <div className="pf-field">
+        <label htmlFor="location" className="pf-label-new">
+          Target Location (Jaipur Areas)
+        </label>
+        
+        {/* Selected locations */}
+        {selectedLocations.length > 0 && (
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            marginBottom: '8px',
+            padding: '8px',
+            background: 'rgba(255,255,255,0.05)',
+            borderRadius: '6px'
+          }}>
+            {selectedLocations.map((area, idx) => (
+              <span key={idx} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '4px 10px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: '16px',
+                fontSize: '13px',
+                color: '#fff'
+              }}>
+                {area}
+                <button
+                  type="button"
+                  onClick={() => handleLocationRemove(area)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '0',
+                    fontSize: '14px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        
+        {/* Input field with autocomplete */}
+        <div style={{ position: 'relative' }}>
+          <input
+            type="text"
+            id="location"
+            value={locationInput}
+            onChange={(e) => {
+              setLocationInput(e.target.value);
+              setShowSuggestions(e.target.value.length > 0);
+            }}
+            onFocus={() => setShowSuggestions(locationInput.length > 0)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            className={`pf-input-new ${errors.location ? 'pf-input-error' : ''}`}
+            placeholder="Type to search Jaipur areas..."
+          />
+          
+          {/* Suggestions dropdown */}
+          {showSuggestions && filteredAreas.length > 0 && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              maxHeight: '200px',
+              overflowY: 'auto',
+              background: '#1a1a1a',
+              border: '1px solid #3a3a3a',
+              borderRadius: '6px',
+              marginTop: '4px',
+              zIndex: 1000,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+            }}>
+              {filteredAreas.slice(0, 10).map((area, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => handleLocationSelect(area)}
+                  style={{
+                    padding: '10px 12px',
+                    cursor: 'pointer',
+                    borderBottom: idx < filteredAreas.length - 1 ? '1px solid #2a2a2a' : 'none',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  {area}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {errors.location && <p className="pf-error-text">{errors.location}</p>}
+        <p className="pf-field-hint">Select from {JAIPUR_AREAS.length} available Jaipur areas</p>
+      </div>
     
     <div className="pf-field-grid">
       <div className="pf-field">
@@ -232,6 +408,24 @@ const AudienceStep: React.FC<StepProps> = ({ formData, updateFormData, errors })
     </div>
     
     <div className="pf-field">
+      <label htmlFor="gender" className="pf-label-new">
+        Target Gender
+      </label>
+      <select
+        id="gender"
+        name="gender"
+        value={formData.gender || 'Male'}
+        onChange={updateFormData}
+        className="pf-input-new"
+      >
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Transgender">Transgender</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    
+    <div className="pf-field">
       <label htmlFor="target" className="pf-label-new">
         Target Customer Type (Optional)
       </label>
@@ -246,14 +440,11 @@ const AudienceStep: React.FC<StepProps> = ({ formData, updateFormData, errors })
       />
     </div>
   </div>
-);
+  );
+};
 
 // Step 4: Review
-interface ReviewStepProps {
-  formData: Record<string, string>;
-}
-
-const ReviewStep: React.FC<ReviewStepProps> = ({ formData }) => (
+const ReviewStep: React.FC<StepProps> = ({ formData, updateFormData, errors }) => (
   <div className="pf-step-content">
     <div className="pf-review-section pf-review-section--product">
       <h3 className="pf-review-title">Product / Service Information</h3>
@@ -280,10 +471,20 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData }) => (
           <p className="pf-review-label">Description</p>
           <p className="pf-review-value">{formData.description || '—'}</p>
         </div>
-        <div className="pf-review-item">
-          <p className="pf-review-label">Price</p>
-          <p className="pf-review-value">{formData.price || '—'}</p>
-        </div>
+        {formData.price && (
+          <div className="pf-review-item">
+            <p className="pf-review-label">Price</p>
+            <p className="pf-review-value">{formData.price}</p>
+          </div>
+        )}
+        {(formData.priceMin || formData.priceMax) && (
+          <div className="pf-review-item">
+            <p className="pf-review-label">Price Range</p>
+            <p className="pf-review-value">
+              ₹{formData.priceMin || '—'} - ₹{formData.priceMax || '—'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
     
@@ -303,6 +504,10 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData }) => (
           </p>
         </div>
         <div className="pf-review-item">
+          <p className="pf-review-label">Gender</p>
+          <p className="pf-review-value">{formData.gender || 'Male'}</p>
+        </div>
+        <div className="pf-review-item">
           <p className="pf-review-label">Customer Type</p>
           <p className="pf-review-value">{formData.target || 'Not specified'}</p>
         </div>
@@ -311,11 +516,27 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData }) => (
     
     <div className="pf-terms-wrapper">
       <label className="pf-terms-label">
-        <input type="checkbox" className="pf-terms-checkbox" required />
+        <input 
+          type="checkbox" 
+          className="pf-terms-checkbox" 
+          id="terms"
+          name="termsAccepted"
+          checked={formData.termsAccepted === 'true'}
+          onChange={(e) => {
+            const event = {
+              target: {
+                name: 'termsAccepted',
+                value: e.target.checked ? 'true' : ''
+              }
+            } as React.ChangeEvent<HTMLInputElement>;
+            updateFormData(event);
+          }}
+        />
         <span className="pf-terms-text">
-          I agree to the <a href="/terms" className="pf-terms-link">Terms of Service</a> and <a href="/privacy" className="pf-terms-link">Privacy Policy</a>
+          I agree to the <a href="/terms" className="pf-terms-link" onClick={(e) => e.preventDefault()}>Terms of Service</a> and <a href="/privacy" className="pf-terms-link" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
         </span>
       </label>
+      {errors.termsAccepted && <p className="pf-error-text">{errors.termsAccepted}</p>}
     </div>
   </div>
 );
@@ -350,9 +571,9 @@ export default function ProductForm(): React.JSX.Element {
   
   const steps: Step[] = [
     { label: "Product", component: ProductInfoStep, validationFields: ['productType', 'name'] },
-    { label: "Description", component: DescriptionStep, validationFields: ['description', 'price'] },
+    { label: "Description", component: DescriptionStep, validationFields: ['description'] },
     { label: "Audience", component: AudienceStep, validationFields: ['location'] },
-    { label: "Review", component: ReviewStep, validationFields: [] },
+    { label: "Review", component: ReviewStep, validationFields: ['termsAccepted'] },
     { label: "Complete", component: SuccessStep, validationFields: [] }
   ];
 
@@ -370,7 +591,12 @@ export default function ProductForm(): React.JSX.Element {
     const newErrors: Record<string, string> = {};
     
     currentValidationFields.forEach(field => {
-      if (!formData[field] || !formData[field].trim()) {
+      // Special handling for checkbox
+      if (field === 'termsAccepted') {
+        if (formData[field] !== 'true') {
+          newErrors[field] = 'You must accept the terms and conditions';
+        }
+      } else if (!formData[field] || !formData[field].trim()) {
         newErrors[field] = 'This field is required';
       }
       
@@ -389,10 +615,27 @@ export default function ProductForm(): React.JSX.Element {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Handle mutual exclusivity for price and priceMin/priceMax
+    if (name === 'price' && value) {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        priceMin: '', // Clear price range when price is entered
+        priceMax: ''
+      }));
+    } else if ((name === 'priceMin' || name === 'priceMax') && value) {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        price: '' // Clear price when price range is entered
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
     
     if (errors[name]) {
       setErrors(prev => {
@@ -419,19 +662,75 @@ export default function ProductForm(): React.JSX.Element {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep()) {
       setIsSubmitting(true);
       
-      // Save to localStorage
+      // Prepare data for backend API (matching model structure)
+      const campaignData = {
+        // Model Field Mappings (matching notebook model exactly):
+        category: formData.category || 'Clothing',                    // → Category (fixed: "Clothing")
+        user_description: `${formData.name || ''} - ${formData.description || ''}`, // → User_Description
+        price: formData.price || null,                               // → Price (single price value)
+        price_range: formData.priceMin && formData.priceMax 
+          ? `${formData.priceMin}-${formData.priceMax}` 
+          : null,                                                     // → Price_Range (format: "min-max")
+        gender: formData.gender || 'Male',                           // → Gender (Male/Female/Transgender/Other)
+        age_min: formData.ageMin ? parseInt(formData.ageMin) : 1,   // → Age_Min (default: 1)
+        age_max: formData.ageMax ? parseInt(formData.ageMax) : 100, // → Age_Max (default: 100)
+        locations: formData.location || '',                          // → Locations (comma-separated areas)
+        target_audience: formData.target || '',                      // Custom field for audience targeting
+        
+        // Additional form data (not directly in model but needed for frontend display)
+        name: formData.name,
+        description: formData.description,
+        priceMin: formData.priceMin,
+        priceMax: formData.priceMax,
+      };
+      
+      // Save to localStorage for dashboard display
       try {
         localStorage.setItem('adpatterns_last_payload', JSON.stringify(formData));
       } catch (err) {
-        // ignore
+        console.error('Failed to save to localStorage:', err);
       }
       
-      // Simulate API submission
+      // TODO: Integrate with backend API
+      // Example API call (uncomment when backend endpoint is ready):
+      /*
+      try {
+        const response = await fetch(API_ENDPOINTS.campaigns.create, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add authorization header if needed
+            // 'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(campaignData)
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to create campaign');
+        }
+        
+        const result = await response.json();
+        console.log('Campaign created:', result);
+        
+        // Navigate to success step
+        setIsSubmitting(false);
+        setDirection("right");
+        setCurrentStep(steps.length - 1);
+      } catch (error) {
+        console.error('Error creating campaign:', error);
+        setIsSubmitting(false);
+        // Show error message to user
+        alert('Failed to create campaign. Please try again.');
+      }
+      */
+      
+      // Temporary: Simulate API submission (REMOVE when backend is integrated)
+      console.log('Campaign Data for Model:', campaignData);
       setTimeout(() => {
         setIsSubmitting(false);
         setDirection("right");

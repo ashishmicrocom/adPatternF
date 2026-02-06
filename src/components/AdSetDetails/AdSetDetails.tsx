@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdSetDetails.css";
 
 type Props = { adset: any; onChange: (a:any)=>void };
 
 export default function AdSetDetails({ adset, onChange }: Props) {
   const [local, setLocal] = useState<any>(adset || {});
+
+  // Update local state when adset prop changes
+  useEffect(() => {
+    if (adset) {
+      setLocal(adset);
+    }
+  }, [adset]);
 
   function update(changes: any) {
     const next = { ...local, ...changes };
@@ -33,10 +40,11 @@ export default function AdSetDetails({ adset, onChange }: Props) {
 
         <div className="as-field">
           <label className="as-label">Gender</label>
-          <select className="as-select" value={local.gender || 'All'} onChange={(e)=>update({ gender: e.target.value })}>
-            <option>All</option>
-            <option>Male</option>
-            <option>Female</option>
+          <select className="as-select as-select-styled" value={local.gender || 'Male'} onChange={(e)=>update({ gender: e.target.value })}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Transgender">Transgender</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 

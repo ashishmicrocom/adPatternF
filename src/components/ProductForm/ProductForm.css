@@ -194,19 +194,83 @@
 
 .pf-input-new {
   width: 100%;
-  padding: 10px 16px;
-  border: 1px solid #ababab;
+  padding: 12px 16px;
+  border: 1.5px solid #333333;
   border-radius: 8px;
   font-size: 14px;
-  color: #ababab;
-  background: black;
-  transition: all 0.15s ease;
+  color: #ffffff;
+  background: #1a1a1a;
+  transition: all 0.2s ease;
+}
+
+.pf-input-new:hover {
+  border-color: #4a4a4a;
 }
 
 .pf-input-new:focus {
   outline: none;
   border-color: #eb723a;
-  box-shadow: 0 0 0 3px rgba(235, 114, 58, 0.1);
+  background: #0f0f0f;
+  box-shadow: 0 0 0 3px rgba(235, 114, 58, 0.15);
+}
+
+.pf-input-new::placeholder {
+  color: #6b6b6b;
+}
+
+/* Select dropdown styling */
+.pf-input-new[type="text"],
+.pf-input-new[type="number"],
+.pf-textarea-new {
+  /* Inherits all base input styles */
+}
+
+select.pf-input-new {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23eb723a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+select.pf-input-new:hover {
+  border-color: #eb723a;
+}
+
+select.pf-input-new option {
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 8px;
+}
+
+.pf-input-readonly {
+  background: #252525;
+  color: #999999;
+  cursor: not-allowed;
+  border-color: #2a2a2a;
+}
+
+.pf-input-readonly:hover {
+  border-color: #2a2a2a;
+}
+
+.pf-input-disabled {
+  background: #1f1f1f !important;
+  color: #555555 !important;
+  cursor: not-allowed !important;
+  border-color: #282828 !important;
+  opacity: 0.6;
+}
+
+.pf-input-disabled:hover {
+  border-color: #282828 !important;
+}
+
+.pf-input-disabled::placeholder {
+  color: #444444 !important;
 }
 
 .pf-form-card.dark .pf-input-new {
@@ -235,21 +299,31 @@
 
 .pf-textarea-new {
   width: 100%;
-  padding: 10px 16px;
-  border: 1px solid #d1d5db;
+  padding: 12px 16px;
+  border: 1.5px solid #333333;
   border-radius: 8px;
   font-size: 14px;
   color: #ffffff;
-  background: black;
+  background: #1a1a1a;
   resize: vertical;
   font-family: inherit;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  min-height: 100px;
+}
+
+.pf-textarea-new:hover {
+  border-color: #4a4a4a;
 }
 
 .pf-textarea-new:focus {
   outline: none;
   border-color: #eb723a;
-  box-shadow: 0 0 0 3px rgba(235, 114, 58, 0.1);
+  background: #0f0f0f;
+  box-shadow: 0 0 0 3px rgba(235, 114, 58, 0.15);
+}
+
+.pf-textarea-new::placeholder {
+  color: #6b6b6b;
 }
 
 .pf-form-card.dark .pf-textarea-new {

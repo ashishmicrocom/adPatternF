@@ -19,10 +19,11 @@ export default function Sidebar({ collapsed = false }: SidebarProps) {
   const navItems = [
     { title: "Dashboard", url: "/ads-dashboard", icon: faChartLine },
     { title: "Create Campaign", url: "/create-campaign", icon: faPlus },
+    { title: "Preview Campaign", url: "/demo-campaign", icon: faBullhorn },
     { title: "Campaigns", url: "/campaigns", icon: faBullhorn },
     { title: "Reports", url: "/reports", icon: faChartColumn },
     { title: "Ad Accounts", url: "/ad-accounts", icon: faLink },
-    { title: "Settings", url: "/settings", icon: faGear },
+    // { title: "Settings", url: "/settings", icon: faGear },
   ];
 
   const isActive = (url: string) => pathname === url || pathname?.startsWith(url + "/");
@@ -63,10 +64,10 @@ export default function Sidebar({ collapsed = false }: SidebarProps) {
       {/* User section */}
       <div className="sb-footer">
         <div className={`sb-user ${collapsed ? "sb-user--collapsed" : ""}`}>
-          <div className="sb-avatar">JD</div>
+          <div className="sb-avatar">AP</div>
           {!collapsed && (
             <div className="sb-user-info">
-              <div className="sb-name">John Doe</div>
+              <div className="sb-name">Ad Patterns</div>
               <div className="sb-email">john@company.com</div>
             </div>
           )}
